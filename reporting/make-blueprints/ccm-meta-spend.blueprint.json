@@ -1,0 +1,78 @@
+{
+    "name": "CCM - Meta Ad Spend → Supabase",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 0,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": { "x": 0, "y": 0 },
+                "restore": {
+                    "parameters": {
+                        "hook": { "label": "Meta Spend Webhook — trigger daily via Make schedule" }
+                    }
+                }
+            }
+        },
+        {
+            "id": 2,
+            "module": "http:ActionSendData",
+            "version": 3,
+            "parameters": {
+                "handleErrors": false,
+                "useNewZLibDeCompression": true
+            },
+            "mapper": {
+                "url": "https://REPLACE_WITH_YOUR_RAILWAY_URL/api/ad-spend",
+                "serializeUrl": false,
+                "method": "POST",
+                "headers": [
+                    {
+                        "name": "Authorization",
+                        "value": "Bearer REPLACE_WITH_YOUR_API_KEY"
+                    },
+                    {
+                        "name": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "qs": [],
+                "bodyType": "raw",
+                "parseResponse": false,
+                "authUser": "",
+                "authPass": "",
+                "timeout": "",
+                "shareCookies": false,
+                "ca": "",
+                "useMtls": false,
+                "contentType": "application/json",
+                "data": "{\"client_name\": \"REPLACE_WITH_CLIENT_NAME\", \"date\": \"{{formatDate(addDays(now; -1); \\\"YYYY-MM-DD\\\")}}\", \"platform\": \"meta\", \"amount\": {{1.spend}}}"
+            },
+            "metadata": {
+                "designer": { "x": 300, "y": 0, "name": "Send to Supabase" }
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": { "orphans": [] },
+        "zone": "eu1.make.com"
+    }
+}

@@ -1,0 +1,78 @@
+{
+    "name": "CCM - No Show → Supabase",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 0,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": { "x": 0, "y": 0 },
+                "restore": {
+                    "parameters": {
+                        "hook": { "label": "No Show Webhook — create new and point GHL here" }
+                    }
+                }
+            }
+        },
+        {
+            "id": 2,
+            "module": "http:ActionSendData",
+            "version": 3,
+            "parameters": {
+                "handleErrors": false,
+                "useNewZLibDeCompression": true
+            },
+            "mapper": {
+                "url": "https://REPLACE_WITH_YOUR_RAILWAY_URL/api/webhooks",
+                "serializeUrl": false,
+                "method": "POST",
+                "headers": [
+                    {
+                        "name": "Authorization",
+                        "value": "Bearer REPLACE_WITH_YOUR_API_KEY"
+                    },
+                    {
+                        "name": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "qs": [],
+                "bodyType": "raw",
+                "parseResponse": false,
+                "authUser": "",
+                "authPass": "",
+                "timeout": "",
+                "shareCookies": false,
+                "ca": "",
+                "useMtls": false,
+                "contentType": "application/json",
+                "data": "{\"event_type\": \"no_show\", \"client_name\": \"{{trim(1.location.name)}}\", \"ghl_contact_id\": \"{{1.contact_id}}\", \"external_id\": \"{{1.id}}\", \"lead_name\": \"{{1.contact.name}}\", \"lead_phone\": \"{{1.contact.phone}}\", \"lead_email\": \"{{1.contact.email}}\", \"calendar_name\": \"{{1.calendar.title}}\", \"occurred_at\": \"{{formatDate(now; \\\"YYYY-MM-DDTHH:mm:ss\\\")}}\"}"
+            },
+            "metadata": {
+                "designer": { "x": 300, "y": 0, "name": "Send to Supabase" }
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": { "orphans": [] },
+        "zone": "eu1.make.com"
+    }
+}

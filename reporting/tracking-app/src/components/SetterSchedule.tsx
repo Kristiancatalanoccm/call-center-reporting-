@@ -33,6 +33,7 @@ const HOURS = Array.from({ length: 13 }, (_, i) => i + 8); // 8–20
 const STATUS_META: Record<string, { label: string; color: string; bg: string }> = {
   pending:    { label: "Pending",    color: "#94a3b8", bg: "rgba(148,163,184,0.1)" },
   completed:  { label: "Completed",  color: "#22c55e", bg: "rgba(34,197,94,0.1)"  },
+  leads_left: { label: "Leads Left", color: "#3b82f6", bg: "rgba(59,130,246,0.1)" },
   no_leads:   { label: "No Leads",   color: "#f59e0b", bg: "rgba(245,158,11,0.1)" },
   no_setters: { label: "No Setters", color: "#ef4444", bg: "rgba(239,68,68,0.1)"  },
 };

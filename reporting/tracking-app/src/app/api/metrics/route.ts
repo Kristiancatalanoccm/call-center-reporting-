@@ -26,6 +26,7 @@ export async function GET(req: Request) {
   else if (liveClientIds) eventsQuery = eventsQuery.in('client_id', liveClientFilter(liveClientIds));
   if (start_date) eventsQuery = eventsQuery.gte('occurred_at', `${start_date}T00:00:00.000Z`);
   if (end_date)   eventsQuery = eventsQuery.lte('occurred_at', `${end_date}T23:59:59.999Z`);
+  eventsQuery = eventsQuery.limit(100000);
 
   let spendQuery = ctx.service.from('ad_spend').select('amount');
 

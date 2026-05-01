@@ -36,6 +36,7 @@ export async function GET(req: Request) {
     let q = applyClientFilter(ctx.service.from('events').select('occurred_at').eq('event_type', 'lead'));
     if (start_date) q = q.gte('occurred_at', `${start_date}T00:00:00.000Z`);
     if (end_date)   q = q.lte('occurred_at', `${end_date}T23:59:59.999Z`);
+    q = q.limit(100000);
 
     const { data } = await q;
     const grid = empty24x7();
@@ -50,6 +51,7 @@ export async function GET(req: Request) {
     let q = applyClientFilter(ctx.service.from('events').select('occurred_at, is_pickup').eq('event_type', 'dial'));
     if (start_date) q = q.gte('occurred_at', `${start_date}T00:00:00.000Z`);
     if (end_date)   q = q.lte('occurred_at', `${end_date}T23:59:59.999Z`);
+    q = q.limit(100000);
 
     const { data } = await q;
     const dials = empty24x7();
@@ -75,6 +77,7 @@ export async function GET(req: Request) {
     );
     if (start_date) q = q.gte('scheduled_at', `${start_date}T00:00:00.000Z`);
     if (end_date)   q = q.lte('scheduled_at', `${end_date}T23:59:59.999Z`);
+    q = q.limit(100000);
 
     const { data } = await q;
     const total = empty24x7();

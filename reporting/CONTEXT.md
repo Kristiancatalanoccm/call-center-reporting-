@@ -20,7 +20,8 @@ The code is ready. The following steps need to be completed before going live.
 - Go to supabase.com → New Project
 - Copy: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
 - Run `tracking-app/supabase/schema.sql` in the SQL editor
-- Run `node tracking-app/scripts/migrate.mjs` from the tracking-app directory
+- **Increase max rows:** supabase.com → project → Settings → API → Max Rows → set to `100000`
+  (default is 1000 — dashboard will show all zeros without this)
 
 ### 2. Deploy to Railway
 - Push `tracking-app/` to a new GitHub repo

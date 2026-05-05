@@ -32,7 +32,35 @@ Extract and remember:
 
 ---
 
-## Step 2 — Apply Supabase schema
+## Step 2 — Create admin login
+
+Ask the user: **"What email and password do you want to use to log into the dashboard?"**
+
+Wait for their response. Then create the account via Supabase Admin API:
+
+```bash
+curl -s -X POST "https://{SUPABASE_PROJECT_REF}.supabase.co/auth/v1/admin/users" \
+  -H "apikey: {SUPABASE_SERVICE_ROLE_KEY}" \
+  -H "Authorization: Bearer {SUPABASE_SERVICE_ROLE_KEY}" \
+  -H "Content-Type: application/json" \
+  -d "{\"email\": \"{USER_EMAIL}\", \"password\": \"{USER_PASSWORD}\", \"email_confirm\": true}"
+```
+
+Extract the user `id` from the response. Then grant admin access:
+
+```bash
+curl -s -X PATCH "https://{SUPABASE_PROJECT_REF}.supabase.co/rest/v1/profiles?id=eq.{USER_ID}" \
+  -H "apikey: {SUPABASE_SERVICE_ROLE_KEY}" \
+  -H "Authorization: Bearer {SUPABASE_SERVICE_ROLE_KEY}" \
+  -H "Content-Type: application/json" \
+  -d "{\"is_admin\": true}"
+```
+
+Confirm success before continuing.
+
+---
+
+## Step 3 — Apply Supabase schema
 
 Read `supabase/schema.sql` and execute it:
 
@@ -47,7 +75,7 @@ If the response contains an error key, report it and stop. If it returns `[]` or
 
 ---
 
-## Step 3 — Update Supabase max rows
+## Step 4 — Update Supabase max rows
 
 Supabase defaults to 1000 rows max which breaks the dashboard. Update to 100,000:
 
@@ -62,7 +90,7 @@ Confirm `max_rows` is `100000` in the response before continuing.
 
 ---
 
-## Step 4 — Import Make blueprints
+## Step 5 — Import Make blueprints
 
 ### 4a — Create a Make folder
 
@@ -108,7 +136,7 @@ If one fails, note the error and continue with the rest.
 
 ---
 
-## Step 5 — Deploy to Railway
+## Step 6 — Deploy to Railway
 
 ### 5a — Check Railway CLI
 
@@ -197,7 +225,7 @@ Extract the domain and report it as the dashboard URL.
 
 ---
 
-## Step 6 — Done! Print summary and next steps
+## Step 7 — Done! Print summary and next steps
 
 ```
 ✓ Supabase schema applied (9 tables created)
